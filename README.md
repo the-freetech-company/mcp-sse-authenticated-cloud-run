@@ -4,6 +4,8 @@ At the momenet (03/04/2024) MCP is still addressing Authentication and Authoriza
 
 Utilizing GCP Cloud Run, I have created a secure way to allow clients to securely connect to your custom MCP server over the internet.
 
+![alt text](docs/mcp_not_supported.png)
+
 ## How it works
 
 The MCP server is hosted on Google Cloud Run. Utilizing Cloud Run IAM Authentication, we can securely connect to the server from the internet by utilizing the Google Cloud SDK to create a proxy connection.
