@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "target": "ES2022",
+    "outDir": "dist",
+    "sourceMap": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "noImplicitAny": false,
+    "paths": {
+      "@/*": ["src/*"],
+      "@freetech/core": ["../../packages/core/src"],
+      "@freetech/core/*": ["../../packages/core/src/*"],
+      "@freetech/models": ["../../packages/models/src"],
+      "@freetech/models/*": ["../../packages/models/src/*"]
+    }
+  },
+  "include": ["src/**/*", "mcp_proxy.ts"],
+  "exclude": ["node_modules", "dist", "mcp_proxy.ts"]
+} 

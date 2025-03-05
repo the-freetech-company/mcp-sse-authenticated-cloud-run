@@ -1,0 +1,7 @@
+{
+  "mcpServers": {
+    "weather-mcp": {
+      "url": "http://localhost:3030/sse"
+    }
+  }
+}
