@@ -1,3 +1,5 @@
+
+
 # Host MCP SSE Server on Google Cloud Run
 
 At the momenet (03/04/2024) MCP is still addressing Authentication and Authorization. They plan to complete this in H1 2025. The issue is, I want to share my MCP server with my team NOW. So here we are.
@@ -11,6 +13,17 @@ Utilizing GCP Cloud Run and User Based IAM Authentication, I have created a simp
 ## How it works
 
 The MCP server is hosted on Google Cloud Run. Utilizing Cloud Run IAM Authentication, we can securely connect to the server from the internet by utilizing the Google Cloud SDK to create a proxy connection.
+
+# TLDR README
+
+This ***should work out of the box*** with minimal config if you already have docker and the gcloud CLI set up locally.
+
+**Step 1:** Update `deploy.sh` with your project id, service account email, etc. 
+
+**Step 2:** On deploy success, grab the cloud run URL that was provided, and add it to `mcp_proxy.ts` along with your project id.
+
+**Step 3:** Run the proxy `npx ts-node mcp_proxy.ts`
+![Running proxy asking question](docs/running_proxy_asking_question.png)
 
 ## Deployment Steps
 
