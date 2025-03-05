@@ -38,7 +38,6 @@ The deployment script will:
 - Build a Docker container for your MCP server
 - Push it to Google Container Registry
 - Deploy it to Cloud Run with authentication enabled
-- Set min and max instances to 1 to ensure the server stays warm
 
 ## Connecting to your deployed MCP server
 
