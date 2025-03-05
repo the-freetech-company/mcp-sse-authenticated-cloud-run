@@ -1,124 +1,78 @@
-# FreeTech Kanban MCP Server
+# Host MCP SSE Server on Google Cloud Run
 
-This is a Model Context Protocol (MCP) server for interacting with the FreeTech Kanban board system through Cursor.
+At the momenet (03/04/2024) MCP is still addressing Authentication and Authorization. They plan to complete this in H1 2025. The issue is, I want to share my MCP server with my team NOW. So here we are.
 
-## Overview
+Utilizing GCP Cloud Run, I have created a secure way to allow clients to securely connect to your custom MCP server over the internet.
 
-The MCP server provides a set of tools that allow AI assistants to interact with the FreeTech Kanban boards stored in Firestore. It enables querying boards, lists, and cards, as well as searching for specific cards.
+## How it works
 
-## Directory Structure
+The MCP server is hosted on Google Cloud Run. Utilizing Cloud Run IAM Authentication, we can securely connect to the server from the internet by utilizing the Google Cloud SDK to create a proxy connection.
 
-```
-services/mcp-server/
-├── src/
-│   ├── api/           # Express server setup
-│   ├── models/        # Type definitions
-│   ├── scripts/       # CLI scripts
-│   ├── services/      # Firebase/Firestore services
-│   ├── tools/         # MCP tools implementation
-│   ├── utils/         # Utility functions
-│   └── index.ts       # Main entry point
-├── package.json
-├── tsconfig.json
-└── README.md
-```
+### Note:
 
-## Available Tools
+Since MCP isn't great for severless environemnts (for a few reasons..), we set the min and max scale to 1. This means that the MCP server will only run when there is a connection. Once there are no connections, the server will sleep.
 
-The MCP server provides the following tools:
+## How to use
 
-- `get-all-boards`: Get a list of all available kanban boards
-- `get-board`: Get details of a specific board by ID
-- `get-board-lists`: Get all lists for a specific board
-- `get-list-cards`: Get all cards in a specific list
-- `get-card`: Get details for a specific card
-- `search-cards`: Search for cards by title or description
+1. Clone the repository
+2. Run `npm install` to install the dependencies
+3. Run `npm run dev` to start the server locally
 
-## Authentication
+## Deployment to Google Cloud Run
 
-The MCP server uses API key authentication. API keys are stored in the Firestore `apiKeys` collection and must be provided as a query parameter:
+To deploy your MCP server to Google Cloud Run:
 
-```
-http://localhost:3030/sse?apiKey=your_api_key
-```
-
-### API Key Structure
-
-Each API key document in Firestore contains:
-
-- `key`: The API key string
-- `userId`: (Optional) The Firebase user ID associated with this key
-- `scopes`: Array of permission scopes (e.g., ['read', 'write'])
-- `description`: (Optional) Description of the key's purpose
-- `createdAt`: Timestamp when the key was created
-- `expiresAt`: (Optional) Timestamp when the key expires
-
-### Generating API Keys
-
-You can generate API keys using the provided CLI script:
-
-```bash
-# Format: npx ts-node src/scripts/createApiKey.ts [userId] [scope1,scope2,...] [description] [expiresInDays]
-
-# Example: Generate a key with read scope that never expires
-npx ts-node src/scripts/createApiKey.ts
-
-# Example: Generate a key for a specific user with read and write scopes
-npx ts-node src/scripts/createApiKey.ts user123 read,write "Development key" 30
-```
-
-## Development
-
-### Prerequisites
-
-- Node.js 18+
-- pnpm
-- Firebase project with Firestore
-
-### Setup
-
-1. Install dependencies:
-
-   ```
-   pnpm install
+1. Make sure you have the [Google Cloud SDK](https://cloud.google.com/sdk/docs/install) installed
+2. Update the `deploy.sh` script with your project details:
+   - `PROJECT_ID`: Your Google Cloud project ID
+   - `REGION`: Your preferred GCP region
+   - `SERVICE_ACCOUNT_EMAIL`: The service account email with appropriate permissions
+3. Run the deployment script:
+   ```bash
+   chmod +x deploy.sh
+   ./deploy.sh
    ```
 
-2. Create a `.env` file with your Firebase configuration (if needed)
+The deployment script will:
+- Build a Docker container for your MCP server
+- Push it to Google Container Registry
+- Deploy it to Cloud Run with authentication enabled
+- Set min and max instances to 1 to ensure the server stays warm
 
-3. Run the development server:
+## Connecting to your deployed MCP server
+
+To connect to your deployed MCP server:
+
+1. Run the MCP proxy locally:
+   ```bash
+   npx ts-node mcp_proxy.ts
    ```
-   pnpm dev
-   ```
 
-### Building
+2. The proxy will:
+   - Check if you're authenticated with Google Cloud
+   - Obtain authentication tokens automatically
+   - Create a local proxy server (default: http://localhost:3030)
+   - Forward authenticated requests to your Cloud Run service
 
-```
-pnpm build
-```
+3. Configure your MCP client to connect to the local proxy URL
 
-### Running in Production
+## Security
 
-```
-pnpm start
-```
+This setup provides several security benefits:
+- Your MCP server is not publicly accessible without authentication
+- All connections are secured with Google Cloud IAM
+- Team members need Google Cloud access to connect
+- No need to implement custom authentication in your MCP server
+- 
+### Connection Issues
+- Verify the Cloud Run URL in `mcp_proxy.ts` matches your deployed service
+- Ensure your firewall allows outbound connections to Cloud Run
+- Check Cloud Run logs for any server-side errors
 
-## Docker
+## Contributing
 
-A Dockerfile is provided for containerization:
+Contributions are welcome! Feel free to submit issues or pull requests.
 
-```
-docker build -t freelo-mcp-server .
-docker run -p 3030:3030 freelo-mcp-server
-```
+## License
 
-## API Endpoints
-
-- `GET /health`: Health check endpoint (no authentication required)
-- `GET /sse`: SSE endpoint for MCP (requires API key)
-- `POST /messages`: Message endpoint for MCP (requires API key)
-
-## Integration with Cursor
-
-This MCP server can be used with Cursor to enable AI assistants to interact with your kanban boards. Configure Cursor to connect to this server at `http://localhost:3030/sse?apiKey=your_api_key` (or your deployed URL).
-
-<!-- IMPORTANT DO NOT REMOVE - YOU CANNOT USE - (dashes) IN TOOL NAMES OR CURSOR WILL NOT UNDERSTAND IT, YOU MUST USE UNDERSCORES INSTEAD OF DASHES -->
+[MIT](LICENSE)
