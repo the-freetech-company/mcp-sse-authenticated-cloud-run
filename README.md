@@ -2,9 +2,11 @@
 
 At the momenet (03/04/2024) MCP is still addressing Authentication and Authorization. They plan to complete this in H1 2025. The issue is, I want to share my MCP server with my team NOW. So here we are.
 
-Utilizing GCP Cloud Run, I have created a secure way to allow clients to securely connect to your custom MCP server over the internet.
+Utilizing GCP Cloud Run and User Based IAM Authentication, I have created a simple, secure way to allow clients to access a custom MCP server over the internet.
 
-![alt text](docs/mcp_not_supported.png)
+[MCP Roadmap](https://modelcontextprotocol.io/development/roadmap)
+
+![MCP Not Supported](docs/mcp_not_supported.png)
 
 ## How it works
 
@@ -30,12 +32,13 @@ To deploy your MCP server to Google Cloud Run:
    - `REGION`: Your preferred GCP region
    - `SERVICE_ACCOUNT_EMAIL`: The service account email with appropriate permissions
 3. Run the deployment script:
-   ```bash
+   ```
    chmod +x deploy.sh
    ./deploy.sh
    ```
 
 The deployment script will:
+
 - Build a Docker container for your MCP server
 - Push it to Google Container Registry
 - Deploy it to Cloud Run with authentication enabled
@@ -46,11 +49,13 @@ The deployment script will:
 To connect to your deployed MCP server:
 
 1. Run the MCP proxy locally:
+
    ```bash
    npx ts-node mcp_proxy.ts
    ```
 
 2. The proxy will:
+
    - Check if you're authenticated with Google Cloud
    - Obtain authentication tokens automatically
    - Create a local proxy server (default: http://localhost:3030)
@@ -61,14 +66,14 @@ To connect to your deployed MCP server:
 ## Security
 
 This setup provides several security benefits:
+
 - Your MCP server is not publicly accessible without authentication
 - All connections are secured with Google Cloud IAM
-- Team members need Google Cloud access to connect
-- No need to implement custom authentication in your MCP server
-- 
+- Team members need Google Cloud SDK access to connect
+
 ### Connection Issues
+
 - Verify the Cloud Run URL in `mcp_proxy.ts` matches your deployed service
-- Ensure your firewall allows outbound connections to Cloud Run
 - Check Cloud Run logs for any server-side errors
 
 ## Contributing
