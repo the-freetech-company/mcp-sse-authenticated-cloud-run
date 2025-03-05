@@ -12,11 +12,7 @@ Utilizing GCP Cloud Run and User Based IAM Authentication, I have created a simp
 
 The MCP server is hosted on Google Cloud Run. Utilizing Cloud Run IAM Authentication, we can securely connect to the server from the internet by utilizing the Google Cloud SDK to create a proxy connection.
 
-### Note:
-
-Since MCP isn't great for severless environemnts (for a few reasons..), we set the min and max scale to 1. This means that the MCP server will only run when there is a connection. Once there are no connections, the server will sleep.
-
-## How to use
+## Deployment Steps
 
 1. Clone the repository
 2. Run `npm install` to install the dependencies
@@ -62,6 +58,24 @@ To connect to your deployed MCP server:
    - Forward authenticated requests to your Cloud Run service
 
 3. Configure your MCP client to connect to the local proxy URL
+
+## Use the MCP server in Cursor
+
+1. First, let's run our proxy to establish a connection between our local machine and the MCP server hosted on Google Cloud Run.
+
+```
+npx ts-node mcp_proxy.ts
+```
+
+2. Now let's add our local proxy server to cursor within the Setting > Features tab in the MCP server section.
+
+![Adding proxy to cursor](docs/add_mcp_one.png)
+
+![Adding proxy to cursor](docs/add_mcp_two.png)
+
+3. Now, we're good to go! Start a new composer (ensure you are in agent mode) and ask what the weather is in a location. Your ouput in your terminal where the proxy is connected + the output of your composer should look like this:
+
+![Running proxy asking question](docs/running_proxy_asking_question.png)
 
 ## Security
 

@@ -1,4 +1,3 @@
-// mcp-proxy.ts
 import express from "express";
 import { createProxyMiddleware } from "http-proxy-middleware";
 import { GoogleAuth } from "google-auth-library";
@@ -11,9 +10,13 @@ import { spawn } from "child_process";
 
 const app = express();
 const port = 3030;
+
+// REPLACE WITH YOUR CLOUD RUN URL
 const CLOUD_RUN_URL =
-  "https://freetech-weather-mcp-667347021524.us-central1.run.app"; // Replace with your Cloud Run URL
-const PROJECT_ID = "freetech-stg"; // Replace with your GCP project ID
+  "https://freetech-weather-mcp-667347021524.us-central1.run.app";
+
+// REPLACE WITH YOUR GCP PROJECT ID
+const PROJECT_ID = "freetech-stg";
 
 // Check if user is authenticated with gcloud
 const checkGcloudAuth = async (): Promise<boolean> => {
