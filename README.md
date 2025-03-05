@@ -25,6 +25,7 @@ This ***should work out of the box*** with minimal config if you already have do
 **Step 3:** Run the proxy `npx ts-node mcp_proxy.ts`
 ![Running proxy asking question](docs/running_proxy_asking_question.png)
 
+# LONG BORING README
 ## Deployment Steps
 
 1. Clone the repository
