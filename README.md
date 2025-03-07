@@ -25,6 +25,8 @@ This ***should work out of the box*** with minimal config if you already have do
 **Step 3:** Run the proxy `npx ts-node mcp_proxy.ts`
 ![Running proxy asking question](docs/running_proxy_asking_question.png)
 
+**Step 3:** Access your MCP server using http://localhost:3030 - Add it to Cursor under Settings > Features > MCP Servers (make sure you select SSE not command)
+
 # LONG BORING README
 ## Deployment Steps
 
