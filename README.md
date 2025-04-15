@@ -2,7 +2,7 @@
 
 # Host MCP SSE Server on Google Cloud Run
 
-At the momenet (03/04/2024) MCP is still addressing Authentication and Authorization. They plan to complete this in H1 2025. The issue is, I want to share my MCP server with my team NOW. So here we are. The only immediate answer to use a SSE MCP server in Cursor, etc.. right now is a network layer based solution (e.g., a proxy). Basic auth, api keys, forget about it. 
+At the moment (03/04/2024) MCP is still addressing Authentication and Authorization. They plan to complete this in H1 2025. The issue is, I want to share my MCP server with my team NOW. So here we are. The only immediate answer to use a SSE MCP server in Cursor, etc.. right now is a network layer based solution (e.g., a proxy). Basic auth, api keys, forget about it. 
 
 Utilizing GCP Cloud Run and User Based IAM Authentication, I have created a simple, secure way to allow clients to access a custom MCP server over the internet.
 
