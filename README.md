@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/mseep-audited.png)](https://mseep.ai/app/the-freetech-company-mcp-sse-authenticated-cloud-run)
+
 
 
 # Host MCP SSE Server on Google Cloud Run
